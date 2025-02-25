@@ -35,12 +35,28 @@ while True:
         
     # Find and display matches (if we have input)
     if current_letters:
-        matches = [word for word in words 
-                  if current_letters in word.lower() and word not in used_words]
-        if matches:
+        # Split matches into two groups: starts_with and contains
+        starts_with = [word for word in words 
+                      if word.lower().startswith(current_letters) and word not in used_words]
+        contains = [word for word in words 
+                   if current_letters in word.lower() and not word.lower().startswith(current_letters) 
+                   and word not in used_words]
+        
+        if starts_with or contains:
             print("Matches found:")
-            print(", ".join(matches[:10]))  # Show first 10 matches
-            if len(matches) > 10:
-                print(f"...and {len(matches)-10} more")
+            # Show starting matches first
+            if starts_with:
+                print("Starts with:", ", ".join(starts_with[:5]))
+            # Then show other matches
+            if contains:
+                if starts_with:
+                    print("Also contains:", ", ".join(contains[:5]))
+                else:
+                    print("Contains:", ", ".join(contains[:5]))
+            
+            total_matches = len(starts_with) + len(contains)
+            shown_matches = min(5, len(starts_with)) + min(5, len(contains))
+            if total_matches > shown_matches:
+                print(f"...and {total_matches - shown_matches} more")
         else:
             print("No matches found")
