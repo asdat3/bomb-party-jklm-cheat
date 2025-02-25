@@ -38,8 +38,10 @@ while True:
         # Split matches into two groups: starts_with and contains
         starts_with = [word for word in words 
                       if word.lower().startswith(current_letters) and word not in used_words]
+        # Check if letters appear as an exact sequence somewhere in the word
         contains = [word for word in words 
-                   if current_letters in word.lower() and not word.lower().startswith(current_letters) 
+                   if current_letters in word.lower() 
+                   and not word.lower().startswith(current_letters) 
                    and word not in used_words]
         
         if starts_with or contains:
